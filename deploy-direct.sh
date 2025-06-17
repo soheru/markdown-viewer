@@ -48,7 +48,8 @@ fi
 # 5. Set up SSL certificates with certbot
 if command -v certbot >/dev/null 2>&1; then
     echo "Setting up SSL certificates with certbot..."
-    sudo certbot certonly --standalone -d $DOMAIN -d www.$DOMAIN --non-interactive --agree-tos -m admin@$DOMAIN
+    # Use port 78 for HTTP challenge to avoid conflicts with running web servers
+    sudo certbot certonly --standalone --http-01-port 78 -d $DOMAIN -d www.$DOMAIN --non-interactive --agree-tos -m admin@$DOMAIN
 
     # Copy certificates to nginx ssl directory
     sudo cp /etc/letsencrypt/live/$DOMAIN/fullchain.pem ./nginx/ssl/
@@ -59,8 +60,8 @@ else
     sudo apt update
     sudo apt install -y certbot
     
-    # Run certbot to get certificates
-    sudo certbot certonly --standalone -d $DOMAIN -d www.$DOMAIN --non-interactive --agree-tos -m admin@$DOMAIN
+    # Run certbot to get certificates with port 78
+    sudo certbot certonly --standalone --http-01-port 78 -d $DOMAIN -d www.$DOMAIN --non-interactive --agree-tos -m admin@$DOMAIN
     
     # Copy certificates
     sudo cp /etc/letsencrypt/live/$DOMAIN/fullchain.pem ./nginx/ssl/

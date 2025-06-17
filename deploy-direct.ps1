@@ -56,13 +56,27 @@ if ($mongoExists) {
 }
 
 # 5. For Windows, we'll need to handle SSL certificates differently
-# This is a placeholder - in a real Windows environment you would need to:
-# 1. Generate/obtain SSL certificates (perhaps using PowerShell's New-SelfSignedCertificate or a 3rd party tool)
-# 2. Place them in the correct location (.\nginx\ssl\)
-Write-Host "Please note: For a production environment, you need to:"
-Write-Host "1. Obtain valid SSL certificates for $Domain"
-Write-Host "2. Place the certificates in .\nginx\ssl\ as fullchain.pem and privkey.pem"
-Write-Host "or modify the Nginx configuration to use your certificate format."
+# Certificate options for Windows:
+Write-Host "SSL Certificate Options for Windows:"
+Write-Host "1. If you have an existing certificate:"
+Write-Host "   - Place the certificate files in .\nginx\ssl\ directory"
+Write-Host "   - Name them fullchain.pem and privkey.pem"
+Write-Host ""
+Write-Host "2. For Let's Encrypt certificates with Windows:"
+Write-Host "   - Install Win-ACME client from https://www.win-acme.com/"
+Write-Host "   - Run: wacs.exe --target manual --host $Domain --webroot .\nginx\webroot"
+Write-Host "   - Convert the certificate to PEM format and place in .\nginx\ssl\"
+Write-Host ""
+Write-Host "3. For testing with self-signed certificates:"
+Write-Host "   - Run: openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout .\nginx\ssl\privkey.pem -out .\nginx\ssl\fullchain.pem"
+Write-Host ""
+Write-Host "NOTE: If you're having port conflicts when obtaining certificates:"
+Write-Host "- Temporarily stop services using port 80/443"
+Write-Host "- Use DNS validation instead of HTTP validation"
+Write-Host "- Use alternative ports (e.g., port 78) if your certificate tool supports it"
+Write-Host ""
+Write-Host "Press Enter to continue with deployment..."
+$null = Read-Host
 
 # 6. Building application
 Write-Host "Building application..."
