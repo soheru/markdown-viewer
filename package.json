@@ -1,0 +1,36 @@
+{
+  "name": "markdown-viewer",
+  "version": "1.0.0",
+  "description": "Markdown viewer and sharing application",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "server": "nodemon server/server.js",
+    "client": "cd client && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "cd client && npm run build",
+    "install-all": "npm install && cd client && npm install",
+    "deploy": "npm run build && npm run start",
+    "deploy:docker": "docker-compose up -d",
+    "deploy:prod": "NODE_ENV=production npm run build && NODE_ENV=production npm run start"
+  },
+  "keywords": [
+    "markdown",
+    "react",
+    "node",
+    "express",
+    "mongodb"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.10.0",
+    "concurrently": "^7.6.0",
+    "pm2": "^5.3.0",
+    "compression": "^1.7.4",
+    "helmet": "^7.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
